@@ -3,6 +3,7 @@ package collection
 import (
 	"github.com/magiconair/properties/assert"
 	"github.com/shopspring/decimal"
+	"reflect"
 	"testing"
 )
 
@@ -115,4 +116,92 @@ func TestBaseCollection_Prepend(t *testing.T) {
 		"foo": 10,
 		"bar": 20,
 	})
+}
+
+func TestBaseCollection_Pull(t *testing.T) {
+
+	a := map[string]interface{}{
+		"product_id": 1,
+		"name":       "Desk",
+		"price":      100,
+		"discount":   false,
+	}
+
+	assert.Equal(t, reflect.DeepEqual((Collect(a).Pull("name")).ToMap(), map[string]interface{}{
+		"product_id": 1,
+		"price":      100,
+		"discount":   false,
+	}), true)
+}
+func TestBaseCollection_Put(t *testing.T) {
+	a := map[string]interface{}{
+		"product_id": 1,
+		"name":       "Desk",
+		"price":      100,
+		"discount":   false,
+	}
+
+	assert.Equal(t, reflect.DeepEqual((Collect(a).Put("name1", 111)).ToMap(), map[string]interface{}{
+		"product_id": 1,
+		"price":      100,
+		"discount":   false,
+		"name":       "Desk",
+		"name1":      111,
+	}), true)
+
+}
+
+func TestBaseCollection_Sort(t *testing.T) {
+
+	m := make([]map[string]interface{}, 3)
+	c := map[string]interface{}{
+		"product_id": 122,
+		"name":       "Desk",
+		"price":      100,
+		"discount":   false,
+	}
+
+	m[0] = c
+	d := map[string]interface{}{
+		"product_id": 1.2,
+		"name":       "Desk",
+		"price":      1010,
+		"discount":   false,
+	}
+	m[1] = d
+	e := map[string]interface{}{
+		"product_id": 1,
+		"name":       "Desk",
+		"price":      1001,
+		"discount":   false,
+	}
+	m[2] = e
+
+	m1 := make([]map[string]interface{}, 3)
+	c1 := map[string]interface{}{
+		"product_id": 122,
+		"name":       "Desk",
+		"price":      100,
+		"discount":   false,
+	}
+	e1 := map[string]interface{}{
+		"product_id": 1,
+		"name":       "Desk",
+		"price":      1001,
+		"discount":   false,
+	}
+	d1 := map[string]interface{}{
+		"product_id": 1.2,
+		"name":       "Desk",
+		"price":      1010,
+		"discount":   false,
+	}
+
+	m1[0] = c1
+
+	m1[1] = e1
+
+	m1[2] = d1
+
+	assert.Equal(t, reflect.DeepEqual((Collect(m).SortBy("price")).ToMapArray(), m1), true)
 }

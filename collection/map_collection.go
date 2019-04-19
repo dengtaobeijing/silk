@@ -31,3 +31,29 @@ func (c MapCollection) Prepend(values ...interface{}) Collection {
 func (c MapCollection) ToMap() map[string]interface{} {
 	return c.value
 }
+
+func (c MapCollection) Pull(key interface{}) Collection {
+
+	var m = copyMap(c.value)
+
+	delete(m, key.(string))
+
+	return MapCollection{m, BaseCollection{length: len(m)}}
+
+}
+
+func (c MapCollection) Put(key string, value interface{}) Collection {
+
+	var (
+		d MapCollection
+		m = make(map[string]interface{}, 0)
+	)
+
+	m = copyMap(c.value)
+	m[key] = value
+
+	d.value = m
+	d.length = len(m)
+
+	return d
+}

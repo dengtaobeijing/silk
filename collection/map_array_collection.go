@@ -175,3 +175,49 @@ func (c MapArrayCollection) Mode(key ...string) []interface{} {
 func (c MapArrayCollection) ToMapArray() []map[string]interface{} {
 	return c.value
 }
+func (c MapArrayCollection) SortBy(key string) Collection {
+
+	var (
+		d = make([]map[string]interface{}, c.length)
+		//[]map[string]interface{}
+		m    = make([]map[string]interface{}, 0)
+		keys = make(map[decimal.Decimal]int, 0)
+	)
+
+	m = c.value
+
+	for i, v := range m {
+		keys[newDecimalFromInterface(v[key])] = i
+	}
+
+	sortKeys := make(map[int]decimal.Decimal, 0)
+	index := 0
+	for i := range keys {
+		sortKeys[index] = i
+		index = index + 1
+	}
+	var temp decimal.Decimal
+	for i := 0; i < c.length-1; i++ {
+		for j := 0; j < c.length-1-i; j++ {
+			if sortKeys[j].GreaterThanOrEqual(sortKeys[j+1]) {
+				temp = sortKeys[j]
+				sortKeys[j] = sortKeys[j+1]
+				sortKeys[j+1] = temp
+			}
+		}
+	}
+
+	index = 0
+
+	for _, v := range sortKeys {
+		for _, v1 := range m {
+			if v.Equal(newDecimalFromInterface(v1[key])) {
+				d[index] = v1
+				index = index + 1
+			}
+		}
+	}
+	return MapArrayCollection{d, BaseCollection{length: len(d)}}
+
+	//return MapArrayCollection(d,d.)
+}
