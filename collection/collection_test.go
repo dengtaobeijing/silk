@@ -202,6 +202,5 @@ func TestBaseCollection_Sort(t *testing.T) {
 	m1[1] = e1
 
 	m1[2] = d1
-
-	assert.Equal(t, reflect.DeepEqual((Collect(m).SortBy("price")).ToMapArray(), m1), true)
+	assert.Equal(t, reflect.DeepEqual((Collect(m).SortBy("price")).Value(), m1), true)
 }
