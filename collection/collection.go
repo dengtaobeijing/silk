@@ -1,9 +1,9 @@
 package collection
 
 import (
-	"github.com/shopspring/decimal"
 	"bytes"
 	"encoding/gob"
+	"github.com/shopspring/decimal"
 )
 
 func Collect(src interface{}) Collection {
@@ -143,7 +143,7 @@ type Collection interface {
 	Take(num int) Collection
 
 	// reference: https://laravel.com/docs/5.8/collections#method-average
-	Average()
+	Average(key string) decimal.Decimal
 
 	// reference: https://laravel.com/docs/5.8/collections#method-chunk
 	Chunk()

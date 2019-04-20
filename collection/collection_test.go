@@ -204,3 +204,58 @@ func TestBaseCollection_Sort(t *testing.T) {
 	m1[2] = d1
 	assert.Equal(t, reflect.DeepEqual((Collect(m).SortBy("price")).Value(), m1), true)
 }
+
+func TestBaseCollection_Average(t *testing.T) {
+
+	m := make([]map[string]interface{}, 3)
+	c := map[string]interface{}{
+		"product_id": 122,
+		"name":       "Desk",
+		"price":      1,
+		"discount":   false,
+	}
+
+	m[0] = c
+	d := map[string]interface{}{
+		"product_id": 1.2,
+		"name":       "Desk",
+		"price":      2,
+		"discount":   false,
+	}
+	m[1] = d
+	e := map[string]interface{}{
+		"product_id": 1,
+		"name":       "Desk",
+		"price":      3,
+		"discount":   false,
+	}
+	m[2] = e
+
+	m1 := make([]map[string]interface{}, 3)
+	c1 := map[string]interface{}{
+		"product_id": 122,
+		"name":       "Desk",
+		"price":      4,
+		"discount":   false,
+	}
+	e1 := map[string]interface{}{
+		"product_id": 1,
+		"name":       "Desk",
+		"price":      5,
+		"discount":   false,
+	}
+	d1 := map[string]interface{}{
+		"product_id": 1.2,
+		"name":       "Desk",
+		"price":      6,
+		"discount":   false,
+	}
+
+	m1[0] = c1
+
+	m1[1] = e1
+
+	m1[2] = d1
+
+	assert.Equal(t, Collect(m).Average("price").IntPart(), int64(2))
+}

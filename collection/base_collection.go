@@ -71,7 +71,7 @@ func (c BaseCollection) Take(num int) Collection {
 	panic("not implement")
 }
 
-func (c BaseCollection) Average() {
+func (c BaseCollection) Average(key string) decimal.Decimal {
 	panic("not implement")
 }
 

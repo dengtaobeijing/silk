@@ -221,3 +221,22 @@ func (c MapArrayCollection) SortBy(key string) Collection {
 
 	//return MapArrayCollection(d,d.)
 }
+
+func (c MapArrayCollection) Average(key string) decimal.Decimal {
+
+	var (
+		m   = make([]map[string]interface{}, 0)
+		sum = decimal.New(0, 0)
+		avg = decimal.New(0, 0)
+	)
+
+	m = c.value
+
+	for _, v := range m {
+		sum = sum.Add(newDecimalFromInterface(v[key]))
+	}
+	avg = sum.Div(newDecimalFromInterface(c.length))
+
+	return avg
+
+}
